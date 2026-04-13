@@ -29,16 +29,18 @@ const Hero = () => {
             ease: 'expo.out',
             delay: 1
         })
+
         gsap.timeline({
             scrollTrigger: {
                 start: 'top top',
                 trigger: '#hero',
                 end: 'bottom top',
                 scrub: 1,
+                markers: true,
             }
         })
-            .to('.left-leaf', { yPercent: -200 }, 0)
-            .to('.right-leaf', { yPercent: 200 }, 0)
+            .to('.left-leaf', { y: -200 }, 0)
+            .to('.right-leaf', { y: 200 }, 0)
 
         const startValue = ismobile ? 'top 50%' : 'center 60%'
         const endValue = ismobile ? '120% top' : 'bottom top'
