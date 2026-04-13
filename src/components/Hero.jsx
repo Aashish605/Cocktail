@@ -1,9 +1,14 @@
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { SplitText } from 'gsap/all'
-import React from 'react'
+import React, { useRef } from 'react'
+import { useMediaQuery } from 'react-responsive'
 
 const Hero = () => {
+    const videoref = useRef()
+
+    const ismobile = useMediaQuery({ maxWidth: 768 })
+
     useGSAP(() => {
         const heroSplit = new SplitText('.title', { type: 'chars,words' })
         const paraSplit = new SplitText('.subtitle', { type: 'lines' })
@@ -22,21 +27,38 @@ const Hero = () => {
             stagger: 0.06,
             duration: 1.8,
             ease: 'expo.out',
-            delay:1
+            delay: 1
         })
         gsap.timeline({
-            scrollTrigger:{
-                start:'top top',
-                trigger:'#hero',
-                end:'bottom top',
-                scrub:1,
-                markers:true,
+            scrollTrigger: {
+                start: 'top top',
+                trigger: '#hero',
+                end: 'bottom top',
+                scrub: 1,
             }
         })
-        .to('.left-leaf',{yPercent:-200},0)
-        .to('.right-leaf',{yPercent:200},0)
+            .to('.left-leaf', { yPercent: -200 }, 0)
+            .to('.right-leaf', { yPercent: 200 }, 0)
 
-    })
+        const startValue = ismobile ? 'top 50%' : 'center 60%'
+        const endValue = ismobile ? '120% top' : 'bottom top'
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: 'video',
+                start: startValue,
+                end: endValue,
+                scrub: true,
+                pin: true,
+            }
+        })
+        videoref.current.onloadedmetadata = () => {
+            tl.to(videoref.current, {
+                currentTime: videoref.current.duration
+            })
+        }
+    }, [])
+
     return (
         <>
             <section id='hero' className='noisy'>
@@ -61,6 +83,9 @@ const Hero = () => {
                     </div>
                 </div>
             </section>
+            <div className="video absolute inset-0">
+                <video src='/videos/output.mp4' muted playsInline preload='auto' ref={videoref} />
+            </div>
         </>
     )
 }
