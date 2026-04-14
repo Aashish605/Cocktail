@@ -36,7 +36,6 @@ const Hero = () => {
                 trigger: '#hero',
                 end: 'bottom top',
                 scrub: 1,
-                markers: true,
             }
         })
             .to('.left-leaf', { y: -200 }, 0)
@@ -86,7 +85,7 @@ const Hero = () => {
                 </div>
             </section>
             <div className="video absolute inset-0">
-                <video src='/videos/output.mp4' muted playsInline preload='auto' ref={videoref} />
+                <video src='/videos/output.mp4' muted playsInline preload='auto'  ref={videoref} />
             </div>
         </>
     )
